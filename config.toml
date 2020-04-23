@@ -1,0 +1,11 @@
+Name = "golib"
+[DbConfig]
+Host = "127.0.0.1"
+Port = 3306
+Database = "golib_dev"
+Username = "root"
+Password = "12345678"
+MaxIdleConns = 10
+MaxOpenConns = 100
+IsLog = true
+TablePrefix = ""
