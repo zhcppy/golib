@@ -1,6 +1,6 @@
 # 一个简单的 GO Web 项目结构
 
-## （可能用到的）第三方库
+## 第三方库
 
 * github.com/stretchr/testify 测试断言库
 * github.com/jinzhu/gorm 数据库ORM库
