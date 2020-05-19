@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/zhcppy/golib/common/util"
@@ -35,13 +36,7 @@ func main() {
 			}
 			logger.L.Debug(cfg.String())
 
-			if viper.GetBool("init") {
-				if err := server.InitDB(cfg.DbConfig); err != nil {
-					return err
-				}
-			}
-
-			appServer, err := server.NewServer(cfg)
+			appServer, err := server.NewServer(version.Name, cfg)
 			if err != nil {
 				return err
 			}

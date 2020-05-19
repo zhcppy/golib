@@ -7,7 +7,7 @@ import (
 )
 
 type Service struct {
-	DB *gorm.DB
+	DB  *gorm.DB
 	Log *zap.SugaredLogger
 }
 
@@ -18,7 +18,7 @@ func New(db *gorm.DB, log *zap.SugaredLogger) *Service {
 	}
 }
 
-func GinHandler(s *Service, handler func(s *Service, c *gin.Context)) func(c *gin.Context)   {
+func GinHandler(s *Service, handler func(s *Service, c *gin.Context)) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		handler(s, c)
 	}

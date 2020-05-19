@@ -3,10 +3,11 @@ package db
 import (
 	"errors"
 	"fmt"
+	"time"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/zhcppy/golib/logger"
-	"time"
 )
 
 type Config struct {
@@ -19,6 +20,7 @@ type Config struct {
 	MaxOpenConns int    `json:"maxOpenConns"`
 	TablePrefix  string `json:"tablePrefix"`
 	IsLog        bool   `json:"isLog"`
+	Init         bool   `json:"init"`
 }
 
 func DefaultCfg() *Config {
@@ -36,9 +38,15 @@ func DefaultCfg() *Config {
 }
 
 // 创建Mysql连接
-func NewMysql(cfg *Config) (*gorm.DB, error) {
+func NewMysql(cfg *Config, models ...func() []interface{}) (*gorm.DB, error) {
 	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
 		return cfg.TablePrefix + defaultTableName
+	}
+	if cfg.Init {
+		logger.L.Debugf("===========> init database")
+		if err := CreateDB(cfg); err != nil {
+			return nil, err
+		}
 	}
 
 	cStr := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local", cfg.Username, cfg.Password, cfg.Host, cfg.Port, cfg.Database)
@@ -57,6 +65,14 @@ func NewMysql(cfg *Config) (*gorm.DB, error) {
 	openedDb.LogMode(cfg.IsLog) // 启用详细日志（包含sql语句）
 
 	logger.L.Debug("database connection successful by mysql,", "db_name: ", cfg.Database)
+
+	if cfg.Init {
+		for _, model := range models {
+			if err := openedDb.AutoMigrate(model()...).Error; err != nil {
+				return nil, err
+			}
+		}
+	}
 	return openedDb, nil
 }
 

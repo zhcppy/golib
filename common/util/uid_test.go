@@ -19,7 +19,7 @@ BenchmarkBytesMaskImpr-12               13709001                86.3 ns/op      
 BenchmarkBytesMaskImprSrc-12            13768291                86.7 ns/op            32 B/op          2 allocs/op
 PASS
 ok      github.com/zhcppy/golib/common/util     8.846s
- */
+*/
 
 const n = 16
 

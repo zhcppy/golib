@@ -5,9 +5,9 @@
 name = golib
 VERSION = $(shell echo $(shell git describe --tags) | sed 's/^v//')
 COMMIT = $(shell git log -1 --format='%H')
-ldflags = '-X github.com/zhcppy/golib/common/version.Name=$(name) \
-		   -X github.com/zhcppy/golib/common/version.Version=$(VERSION) \
-           -X github.com/zhcppy/golib/common/version.Commit=$(COMMIT) \
+ldflags = '-X github.com/zhcppy/golib/version.Name=$(name) \
+		   -X github.com/zhcppy/golib/version.Version=$(VERSION) \
+           -X github.com/zhcppy/golib/version.Commit=$(COMMIT) \
            -w -s'
 
 export GO111MODULE = on
