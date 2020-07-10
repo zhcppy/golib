@@ -23,4 +23,4 @@ install:
 	@go install -ldflags $(ldflags) -v -o $ .
 
 format:
-	@find . -name '*.go' -type f -not -path "*.git*" | xargs gofmt -w -s
+	@find . -name '*.go' -type f -not -path "*.git*" | xargs goimports -w -e -l
